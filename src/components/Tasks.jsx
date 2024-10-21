@@ -8,6 +8,7 @@ const Task = ({ task, handleCheck, removeTask }) => {
 				checked={task.completed}
 				onChange={() => handleCheck(task.id)}
 				className="task-checkbox"
+				disabled={task.completed}
 			/>
 			<span className={task.completed ? "task-name completed" : "task-name"}>
 				{task.name}

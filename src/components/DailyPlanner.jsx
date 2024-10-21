@@ -10,6 +10,7 @@ const DailyPlanner = () => {
 	];
 
 	const [tasks, setTasks] = useState(initialTasks);
+	const [filter, setFilter] = useState("all");
 
 	const addTask = (taskName) => {
 		const newTask = {
@@ -31,6 +32,11 @@ const DailyPlanner = () => {
 			)
 		);
 	};
+	const filteredTasks = tasks.filter((task) => {
+		if (filter === "completed") return task.completed;
+		if (filter === "pending") return !task.completed;
+		return true;
+	});
 
 	const remainingTasks = tasks.filter((task) => !task.completed).length;
 
@@ -39,8 +45,31 @@ const DailyPlanner = () => {
 			<h1>Daily Planner</h1>
 			<TaskForm addTask={addTask} />
 			<h2>You have {remainingTasks} tasks remaining</h2>
+
+			{/* Filter Section with chips */}
+			<div className="task-filter-chips">
+				<button
+					className={`chip ${filter === "all" ? "active" : ""}`}
+					onClick={() => setFilter("all")}
+				>
+					All
+				</button>
+				<button
+					className={`chip ${filter === "completed" ? "active" : ""}`}
+					onClick={() => setFilter("completed")}
+				>
+					Completed
+				</button>
+				<button
+					className={`chip ${filter === "pending" ? "active" : ""}`}
+					onClick={() => setFilter("pending")}
+				>
+					Pending
+				</button>
+			</div>
+
 			<TaskList
-				tasks={tasks}
+				tasks={filteredTasks}
 				handleCheck={handleCheck}
 				removeTask={removeTask}
 			/>
